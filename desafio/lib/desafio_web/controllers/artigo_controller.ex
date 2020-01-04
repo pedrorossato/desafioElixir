@@ -8,7 +8,7 @@ defmodule DesafioWeb.ArtigoController do
 
   def index(conn, _params) do
     artigos = Management.list_artigos()
-    render(conn, "index.json", artigos: artigos)
+    render(conn, "index.json-api", data: artigos)
   end
 
   def create(conn, %{"artigo" => artigo_params}) do
@@ -16,20 +16,20 @@ defmodule DesafioWeb.ArtigoController do
       conn
       |> put_status(:created)
       |> put_resp_header("location", Routes.artigo_path(conn, :show, artigo))
-      |> render("show.json", artigo: artigo)
+      |> render("show.json-api", data: artigo)
     end
   end
 
   def show(conn, %{"id" => id}) do
     artigo = Management.get_artigo!(id)
-    render(conn, "show.json", artigo: artigo)
+    render(conn, "show.json-api", data: artigo)
   end
 
   def update(conn, %{"id" => id, "artigo" => artigo_params}) do
     artigo = Management.get_artigo!(id)
 
     with {:ok, %Artigo{} = artigo} <- Management.update_artigo(artigo, artigo_params) do
-      render(conn, "show.json", artigo: artigo)
+      render(conn, "show.json-api", data: artigo)
     end
   end
 

@@ -13,6 +13,10 @@ defmodule DesafioWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :json_api do
+    plug :accepts, ["json-api"]
+    plug JaSerializer.Deserializer
+  end
   scope "/", DesafioWeb do
     pipe_through :browser
 
@@ -21,7 +25,7 @@ defmodule DesafioWeb.Router do
 
   # Other scopes may use custom stacks.
   scope "/api", DesafioWeb do
-    pipe_through :api
+    pipe_through :json_api
     resources "/eventos", EventoController, only: [:index, :show]
     resources "/artigos", ArtigoController, only: [:index, :show]
   end
