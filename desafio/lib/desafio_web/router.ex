@@ -20,7 +20,9 @@ defmodule DesafioWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", DesafioWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", DesafioWeb do
+    pipe_through :api
+    resources "/eventos", EventoController, only: [:index, :show]
+    resources "/artigos", ArtigoController, only: [:index, :show]
+  end
 end

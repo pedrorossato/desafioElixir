@@ -63,4 +63,61 @@ defmodule Desafio.ManagementTest do
       assert %Ecto.Changeset{} = Management.change_evento(evento)
     end
   end
+
+  describe "artigos" do
+    alias Desafio.Management.Artigo
+
+    @valid_attrs %{}
+    @update_attrs %{}
+    @invalid_attrs %{}
+
+    def artigo_fixture(attrs \\ %{}) do
+      {:ok, artigo} =
+        attrs
+        |> Enum.into(@valid_attrs)
+        |> Management.create_artigo()
+
+      artigo
+    end
+
+    test "list_artigos/0 returns all artigos" do
+      artigo = artigo_fixture()
+      assert Management.list_artigos() == [artigo]
+    end
+
+    test "get_artigo!/1 returns the artigo with given id" do
+      artigo = artigo_fixture()
+      assert Management.get_artigo!(artigo.id) == artigo
+    end
+
+    test "create_artigo/1 with valid data creates a artigo" do
+      assert {:ok, %Artigo{} = artigo} = Management.create_artigo(@valid_attrs)
+    end
+
+    test "create_artigo/1 with invalid data returns error changeset" do
+      assert {:error, %Ecto.Changeset{}} = Management.create_artigo(@invalid_attrs)
+    end
+
+    test "update_artigo/2 with valid data updates the artigo" do
+      artigo = artigo_fixture()
+      assert {:ok, %Artigo{} = artigo} = Management.update_artigo(artigo, @update_attrs)
+    end
+
+    test "update_artigo/2 with invalid data returns error changeset" do
+      artigo = artigo_fixture()
+      assert {:error, %Ecto.Changeset{}} = Management.update_artigo(artigo, @invalid_attrs)
+      assert artigo == Management.get_artigo!(artigo.id)
+    end
+
+    test "delete_artigo/1 deletes the artigo" do
+      artigo = artigo_fixture()
+      assert {:ok, %Artigo{}} = Management.delete_artigo(artigo)
+      assert_raise Ecto.NoResultsError, fn -> Management.get_artigo!(artigo.id) end
+    end
+
+    test "change_artigo/1 returns a artigo changeset" do
+      artigo = artigo_fixture()
+      assert %Ecto.Changeset{} = Management.change_artigo(artigo)
+    end
+  end
 end
